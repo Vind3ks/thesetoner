@@ -1,0 +1,19 @@
+# Only needed when running the bot yourself (sbt run). On FAF's servers these come from
+# environment variables with the same names, like QAI's.
+# Copy to setoner.conf (git ignores it) and fill in.
+
+# Where to connect. FAF's chat is reached over WebSocket.
+IRC_SERVER=wss://chat.faforever.com
+
+# Nick, which is also the IRC account name.
+IRC_USER=TheSetoner
+
+# Password of the IRC account. On FAF this is the "fixed user" password that FAF admins set
+# in faf-user-service. Sent as "static:<password>"; the prefix is added if you leave it out.
+IRC_PASS=
+
+# Channels, comma separated, # optional.
+IRC_CHANNELS=aeolus
+
+# true = log every line the server sends.
+#IRC_DEBUG=true

@@ -1,0 +1,14 @@
+# sbt / build output
+target/
+project/target/
+project/project/
+.bsp/
+.metals/
+.bloop/
+.idea/
+
+# local secrets and runtime state
+setoner.conf
+logs/
+*.token
+__pycache__/

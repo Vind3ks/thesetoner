@@ -1,0 +1,7 @@
+target/
+project/target/
+project/project/
+localtest/
+setoner.conf
+*.token
+.git/

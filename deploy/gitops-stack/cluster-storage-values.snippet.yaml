@@ -1,0 +1,6 @@
+# Add to cluster/storage/values.yaml under managedStorages (next to faf-qai / faf-daily):
+  - pv:
+      name: faf-setoner
+      size: 1Gi
+    pvc:
+      namespace: faf-apps

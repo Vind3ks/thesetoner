@@ -1,0 +1,48 @@
+name: Build
+
+on:
+  push:
+    branches: ["**"]
+    tags: ["v*"]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Pushing only happens from the FAForever copy of the repo, on main/develop or a tag.
+      - name: Decide whether to push
+        id: push
+        run: |
+          if [ "${{ github.repository_owner }}" = "FAForever" ] && [ "${{ github.event_name }}" = "push" ] && \
+             { [ "${{ github.ref }}" = "refs/heads/main" ] || [ "${{ github.ref }}" = "refs/heads/develop" ] || [[ "${{ github.ref }}" == refs/tags/* ]]; }; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Login to Docker Hub
+        if: steps.push.outputs.enabled == 'true'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: faforever/faf-setoner
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+
+      - name: Build (and push from FAForever main/develop/tags)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: ${{ steps.push.outputs.enabled == 'true' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

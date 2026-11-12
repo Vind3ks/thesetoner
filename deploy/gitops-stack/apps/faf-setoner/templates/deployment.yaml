@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: faf-setoner
+  labels:
+    app: faf-setoner
+  annotations:
+    reloader.stakater.com/auto: "true"
+    keel.sh/policy: force
+    keel.sh/matchTag: "true"
+    keel.sh/trigger: poll
+    keel.sh/pollSchedule: "@every 10m"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  # The bot's lists are plain files on one volume, and one nick can't be logged in twice:
+  # the old pod has to be gone before the new one starts.
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: faf-setoner
+  template:
+    metadata:
+      labels:
+        app: faf-setoner
+    spec:
+      # The image runs as uid 1000, and a local volume keeps whatever owner its directory was created with.
+      initContainers:
+        - name: data-owner
+          image: busybox:1.37
+          command: ["sh", "-c", "chown -R 1000:1000 /data"]
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      containers:
+        - image: faforever/faf-setoner:main
+          imagePullPolicy: Always
+          name: faf-setoner
+          envFrom:
+            - configMapRef:
+                name: faf-setoner
+            - secretRef:
+                name: faf-setoner
+          resources:
+            requests:
+              memory: 192Mi
+            limits:
+              memory: 384Mi
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: faf-setoner-pvc
+      restartPolicy: Always

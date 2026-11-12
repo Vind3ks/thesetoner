@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: faf-setoner
+  labels:
+    app: faf-setoner
+data:
+  IRC_SERVER: wss://chat.{{ .Values.baseDomain }}
+  IRC_USER: TheSetoner
+  IRC_CHANNELS: aeolus

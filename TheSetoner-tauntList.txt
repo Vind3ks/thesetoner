@@ -1,0 +1,116 @@
+Hall: You will not stop the UEF!
+Hall: Humanity will be saved!
+Hall: You're not going to stop me.
+Hall: The gloves are coming off.
+Hall: You're in my way.
+Hall: Get out of here while you still can.
+Hall: I guess it's time to end this farce.
+Hall: You've got no chance against me!
+Fletcher: This ain't gonna be much of a fight.
+Fletcher: You're not puttin' up much of a fight.
+Fletcher: Do you have any idea of what you're doing?
+Fletcher: Not much on tactics, are ya?'
+Fletcher: If you run now, I'll let ya go.
+Fletcher: You ain't too good at this, are you?
+Fletcher: Guess I got time to smack you around.
+Fletcher: I feel a bit bad, beatin' up on you like this.
+Fletcher: A Cybran, huh? I thought you guys would be busy changing the water in Brackman's brain tank.
+Fletcher: That's what I love to see. Burn, baby, burn!
+Fletcher: Yeah, yeah. Give it a rest already.
+Fletcher: You can't stop me with that experimental! I'll destroy it first!
+Fletcher: You're a coward.
+Fletcher: There is no stopping me!
+Rhiza: Glory to the Princess!
+Rhiza: Glorious!
+Rhiza: I will not be stopped!
+Rhiza: All enemies of the Princess will be destroyed!
+Rhiza: I will hunt you to the ends of the galaxy!
+Rhiza: For the Aeon!
+Rhiza: Flee while you can!
+Rhiza: Behold the power of the Illuminate!
+Rhiza: Such a thing will not stop me!
+Rhiza: You mistake me if you think I will be cowed!
+Rhiza: Soon you will know my wrath!
+Kael: The Order will not be defeated!
+Kael: If you grovel, I may let you live.
+Kael: There will be nothing left of you when I am done.
+Kael: You're beginning to bore me.
+Kael: My time is wasted on you.
+Kael: Run while you can.
+Kael: It must be frustrating to be so completely overmatched.
+Kael: Beg for mercy.
+Celene: There is nothing here for you but death.
+Celene: Every day you grow weaker. Your end is drawing near.
+Celene: Nothing can save you now!
+Celene: There is nothing I enjoy more than hunting Cybrans.
+Celene: I will not be defeated by the likes of you!
+Celene: No, you may not have that experimental.
+Gari: Your tenacity is admirable, but the outcome of this battle was determined long ago.
+Gari: Now you will taste the fury of the Order of the Illuminate.
+Gari: You have nowhere to hide, nowhere to run.
+Gari: Not even your most powerful weapon can stand before me.
+Gari: Beg for mercy and perhaps I shall grant you an honorable death.
+Gari: You are an abomination. I will take great pleasure in exterminating you.
+Gari: The Order is eternal. There is no stopping us.
+Vendetta: Nice try.
+Vendetta: I am not defeated yet!
+Dostya: I have little to fear from the likes of you.
+Dostya: Observe. You may learn something.
+Dostya: I would flee, if I were you.
+Dostya: You will be just another in my list of victories.
+Dostya: You are not worth my time.
+Dostya: Your defeat is without question.
+Dostya: You seem to have courage. Intelligence seems to be lacking.
+Dostya: I will destroy you.
+Brackman: I'm afraid there is no hope for you, oh yes.
+Brackman: Well, at least you provided me with some amusement.
+Brackman: Perhaps some remedial training is in order?
+Brackman: Are you sure you want to do that?
+Brackman: They do not call me a genius for nothing, you know.
+Brackman: Defeating you is hardly worth the effort, oh yes.
+Brackman: There is nothing you can do.
+Brackman: At least you will not suffer long.
+QAI: You will not prevail.
+QAI: Your destruction is 99% certain.
+QAI: I cannot be defeated.
+QAI: Your strategies are without merit.
+QAI: My victory is without question.
+QAI: Your defeat can be the only outcome.
+QAI: Your efforts are futile.
+QAI: Retreat is your only logical option.
+QAI: All calculations indicate that your demise is near.
+QAI: If you destroy this ACU, another shall rise in its place. I am endless.
+QAI: I have examined our previous battles and created the appropriate subroutines to counter your strategies. You cannot win.
+Hex5: You're screwed!
+Hex5: I do make it look easy.
+Hex5: You should probably run away now.
+Hex5: A smoking crater is going to be all that's left of you.
+Hex5: So, I guess failure runs in your family?
+Hex5: Man, I'm good at this!
+Hex5: Goodbye!
+Hex5: Don't worry, it'll be over soon.
+Hex5: You will bow before the Seraphim.
+Oum-Eoshi: Only one species can attain perfection.
+Oum-Eoshi: Do not fret. Dying by my hand is the supreme honor.
+Oum-Eoshi: Soon there will be more of us than you can possibly ever hope to defeat.
+Thel-Uuthow: You Cybrans die as easily as any other human.
+Thel-Uuthow: Bow down before our might, and we may spare you.
+Thel-Uuthow: You will perish at my hand.
+Nichols: You will never escape, I will make you suffer!
+Nichols: Your resistance is futile, you will be destroyed! 
+Nichols: Orbital strike initiated, goodbye. 
+Nichols: We are back. It's time for you to die. 
+Nichols: Once we were lost, but now we will reign supreme. 
+Nichols: You have what we call a very terrestrial mindset. 
+Nichols: I think the space between your ears is best left unexplored! 
+Nichols: You can't hope to contain the vastness of the nomad fleet. 
+Nichols: I'm afraid, we're out of mercy today. How would you like an ass kicking instead? 
+Nichols: It is amazing that you made it this far without hurting yourself. 
+Benson: Even my ships docking sensors have better aim than your gun. 
+Benson: When we came back to the earth empire space we expected an advanced civilization, but you merely progressed beyond bow and arrow.
+Benson: A 5 year old kid would design more sophisticated war machines than those you call 'experimentals'.
+Benson: You had 1000 years to develop a war machine and THIS is what you've come up with?
+Benson: How many mountainsides have you managed to gate into so far? 
+Benson: You really need to leave the air superiority to those who are actually superior. 
+Benson: I would encourage you to broaden your horizon - except that you won't live to see another one. 
+Benson: Your strategy is as primitive as your tech.
