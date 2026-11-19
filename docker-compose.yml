@@ -1,0 +1,22 @@
+# Runs TheSetoner on your own server with Docker.
+#   1. Copy .env.example to .env and fill in the IRC password.
+#   2. docker compose up -d
+# The bot restarts by itself if it disconnects or the server reboots.
+services:
+  setoner:
+    image: ghcr.io/vind3ks/thesetoner:main
+    # If the image can't be downloaded, Docker builds it from this folder instead.
+    build: .
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      # The bot's lists (pinglists, quotes, admins...) live here and survive updates.
+      - setoner-data:/data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  setoner-data:

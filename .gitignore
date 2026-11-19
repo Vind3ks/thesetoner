@@ -12,3 +12,6 @@ setoner.conf
 logs/
 *.token
 __pycache__/
+
+# server settings (contains the IRC password)
+.env

@@ -42,7 +42,8 @@ FAF's IRC server (ergo) only accepts clients that log in with SASL, and it requi
 
 - Run locally: `sbt run`, with a `setoner.conf` in place. You need JDK 17+ and sbt.
 - Build the image: `docker build -t faf-setoner .`
-- CI (`.github/workflows/build.yml`) builds the image on every push. From the FAForever repo it pushes `faforever/faf-setoner:<branch>` for main and develop, and `:<tag>` for tags.
+- Run it on a server: copy `.env.example` to `.env`, fill in `IRC_PASS`, then `docker compose up -d`.
+- CI (`.github/workflows/build.yml`) builds the image on every push. Pushes to main and tags publish `ghcr.io/<owner>/thesetoner`, which `docker-compose.yml` uses. From the FAForever repo it also pushes `faforever/faf-setoner:<branch>` for main and develop, and `:<tag>` for tags.
 - `localtest/` runs FAF's ergo config on your machine, so the bot can be tested without any FAF credentials.
 
 The files for deploying it on FAF are in `deploy/gitops-stack/`.

@@ -5,3 +5,4 @@ localtest/
 setoner.conf
 *.token
 .git/
+.env
