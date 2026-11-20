@@ -15,21 +15,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Pushing only happens from the FAForever copy of the repo, on main/develop or a tag.
+      # Pushes to main and tags publish the image to GitHub's registry
+      # (ghcr.io/<owner>/<repo>), which docker-compose.yml downloads from.
       - name: Decide whether to push
         id: push
-        run: |
-          if [ "${{ github.repository_owner }}" = "FAForever" ] && [ "${{ github.event_name }}" = "push" ] && \
-             { [ "${{ github.ref }}" = "refs/heads/main" ] || [ "${{ github.ref }}" = "refs/heads/develop" ] || [[ "${{ github.ref }}" == refs/tags/* ]]; }; then
-            echo "enabled=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "enabled=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      # Self-hosting: main and tags of any copy of the repo go to GitHub's registry
-      # (ghcr.io/<owner>/<repo>), which docker-compose.yml downloads from.
-      - name: Decide whether to push to GitHub's registry
-        id: ghcr
         run: |
           echo "image=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
           if [ "${{ github.event_name }}" = "push" ] && \
@@ -40,27 +29,18 @@ jobs:
           fi
 
       - name: Login to GitHub's registry
-        if: steps.ghcr.outputs.enabled == 'true'
+        if: steps.push.outputs.enabled == 'true'
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Login to Docker Hub
-        if: steps.push.outputs.enabled == 'true'
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: |
-            name=faforever/faf-setoner,enable=${{ steps.push.outputs.enabled == 'true' }}
-            name=${{ steps.ghcr.outputs.image }},enable=${{ steps.ghcr.outputs.enabled == 'true' }}
+          images: ${{ steps.push.outputs.image }}
           tags: |
             type=ref,event=branch
             type=ref,event=tag
@@ -69,6 +49,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          push: ${{ steps.push.outputs.enabled == 'true' || steps.ghcr.outputs.enabled == 'true' }}
+          push: ${{ steps.push.outputs.enabled == 'true' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

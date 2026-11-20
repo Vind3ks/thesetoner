@@ -2,7 +2,7 @@
 
 The Setons bot for `#aeolus` on [FAForever](https://www.faforever.com): Setons, ladder and TMM pinglists, game calls, preaching, quotes and other channel fun.
 
-It runs alongside FAF's [QAI](https://github.com/FAForever/faf-qai) bot and is deployed the same way: a Docker image configured with `IRC_*` environment variables, logging into FAF's IRC as a fixed user. QAI handles the factual lookups (`!player`, `!ratings`, `!streams`, `!seen`, `!help`), so Setoner doesn't duplicate them and keeps its help under `!setoner`.
+It runs alongside FAF's [QAI](https://github.com/FAForever/faf-qai) bot and is built the same way: a Docker image configured with `IRC_*` environment variables, logging into FAF's IRC as a fixed user. QAI handles the factual lookups (`!player`, `!ratings`, `!streams`, `!seen`, `!help`), so Setoner doesn't duplicate them and keeps its help under `!setoner`.
 
 ## Commands
 
@@ -43,7 +43,5 @@ FAF's IRC server (ergo) only accepts clients that log in with SASL, and it requi
 - Run locally: `sbt run`, with a `setoner.conf` in place. You need JDK 17+ and sbt.
 - Build the image: `docker build -t faf-setoner .`
 - Run it on a server: copy `.env.example` to `.env`, fill in `IRC_PASS`, then `docker compose up -d`.
-- CI (`.github/workflows/build.yml`) builds the image on every push. Pushes to main and tags publish `ghcr.io/<owner>/thesetoner`, which `docker-compose.yml` uses. From the FAForever repo it also pushes `faforever/faf-setoner:<branch>` for main and develop, and `:<tag>` for tags.
+- CI (`.github/workflows/build.yml`) builds the image on every push. Pushes to main and tags publish `ghcr.io/<owner>/thesetoner`, which `docker-compose.yml` uses.
 - `localtest/` runs FAF's ergo config on your machine, so the bot can be tested without any FAF credentials.
-
-The files for deploying it on FAF are in `deploy/gitops-stack/`.
