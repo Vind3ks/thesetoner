@@ -64,6 +64,9 @@ class FafBot(val config:BotConfig){
             writeLine("PONG "+line.drop(5))
             return true
         }
+        else if(handleAway(line)){
+            return true
+        }
         else {
             val commands = line.split(':')(1).split(" ")
 			//printLine("COMMANDS " + commands.mkString)
@@ -116,6 +119,38 @@ class FafBot(val config:BotConfig){
 
     def handlePriv(line:String):Boolean = return false
 
+    /*
+     * FAF's chat keeps everyone "always-on": people who close the client stay in the channel
+     * and the server marks them away instead. So "in the channel" is not "online"; the bot
+     * tracks who is away (WHO replies after joining, then AWAY messages via away-notify).
+     */
+    val awayUsers:HashSet[String] = new HashSet[String]()
+    def isOnline(nick:String):Boolean = !awayUsers.contains(nick.toLowerCase)
+    // Called when someone comes back from away (opens their client again)
+    def onBack(nick:String):Unit = {}
+
+    def handleAway(line:String):Boolean = {
+        val parts = line.split(" ")
+        if(parts.length < 2) return false
+        // :nick!user@host AWAY :reason   (went away)    :nick!user@host AWAY   (came back)
+        if(parts(1) == "AWAY" && parts(0).startsWith(":")){
+            val nick = parts(0).drop(1).takeWhile(_ != '!')
+            if(parts.length > 2) awayUsers.add(nick.toLowerCase)
+            else if(awayUsers.remove(nick.toLowerCase)) onBack(nick)
+            return true
+        }
+        // WHO reply: :server 352 me #chan user host server nick H|G[flags] :hops realname
+        if(parts(1) == "352" && parts.length > 8){
+            val nick = parts(7)
+            if(parts(8).startsWith("G")) awayUsers.add(nick.toLowerCase)
+            else awayUsers.remove(nick.toLowerCase)
+            return true
+        }
+        // End of WHO list
+        if(parts(1) == "315") return true
+        return false
+    }
+
     def initChannels(channels:Array[String]):Unit = {
         for(n <- channels)
             this.channels.put(n,new Channel(n,this))
@@ -156,7 +191,8 @@ class FafBot(val config:BotConfig){
                     val caps = offered.trim.split(" ").map(_.takeWhile(_ != '='))
                     if(caps.contains("sasl")){
                         saslRequested = true
-                        writeLine("CAP REQ :sasl")
+                        // away-notify: the server tells us when people go away or come back
+                        writeLine(if(caps.contains("away-notify")) "CAP REQ :sasl away-notify" else "CAP REQ :sasl")
                     } else {
                         throw new IOException("Server does not offer SASL, cannot log in")
                     }
@@ -203,8 +239,11 @@ class FafBot(val config:BotConfig){
     }
 
     def joinChannels():Unit = {
-        for((n,c) <- channels)
+        for((n,c) <- channels){
             writeLine("JOIN "+n)
+            // who is away right now (see handleAway)
+            writeLine("WHO "+n)
+        }
     }
 
     def readLine():String = {
@@ -310,6 +349,7 @@ class FafBot(val config:BotConfig){
             for(channel <- input.split(" ")){
                 if(!channels.contains(channel)){
                     writeLine(String.format("JOIN %s",channel))
+                    writeLine(String.format("WHO %s",channel))
                     channels.put(channel, new Channel(channel,this))
                 }
             }
@@ -740,6 +780,9 @@ class FunBot(config:BotConfig) extends FafBot(config) {
         return true
 	}
 
+
+    // Someone opened their client again: deliver any offline messages waiting for them
+    override def onBack(nick:String):Unit = checkandsendOfflinemsg(nick)
 
     override def handleLine(line:String):Boolean = {
         if(super.handleLine(line))

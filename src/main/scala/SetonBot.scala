@@ -73,7 +73,7 @@ object bot {
 			def checkStatus(user:String):String = {
 				val chan = this.channels("#aeolus")
 				var status = "offline"
-				if(chan.users.contains(user)) {
+				if(chan.users.contains(user) && isOnline(user)) {
 					status = "online"
 				}
 				return status
@@ -482,7 +482,7 @@ object bot {
 						//printLine(String.format("CHANNEL USERLIST -> %s", this.channels(channel).users))
                         for(name <- pingList) {
 							var rating = 5000
-							if(c.users.contains(name) && (!name.equals(n))) {
+							if(c.users.contains(name) && isOnline(name) && (!name.equals(n))) {
 								if (ratinglimit != -1) {
 									rating = Leaderboards.getGRating(name)
 								}
@@ -527,7 +527,7 @@ object bot {
 					//printLine(String.format("CHANNEL USERLIST -> %s", this.channels(channel).users))
 					for(name <- galaList) {
 						var rating = 5000
-						if(c.users.contains(name) && (!name.equals(n))) {
+						if(c.users.contains(name) && isOnline(name) && (!name.equals(n))) {
 							if (ratinglimit != -1) {
 								rating = Leaderboards.getGRating(name)
 							}
@@ -571,7 +571,7 @@ object bot {
 					//printLine(String.format("CHANNEL USERLIST -> %s", this.channels(channel).users))
 					for(name <- bhList) {
 						var rating = 5000
-						if(c.users.contains(name) && (!name.equals(n))) {
+						if(c.users.contains(name) && isOnline(name) && (!name.equals(n))) {
 							if (ratinglimit != -1) {
 								rating = Leaderboards.getGRating(name)
 							}
@@ -618,7 +618,7 @@ object bot {
                         val c = this.channels(channel)
                         for(name <- ladderList) {
 							var rating = 5000
-							if(c.users.contains(name) && (!name.equals(n))) {
+							if(c.users.contains(name) && isOnline(name) && (!name.equals(n))) {
 								if (ratinglimit != -1) {
 									rating = Leaderboards.getLRating(name)
 								}
@@ -665,7 +665,7 @@ object bot {
                         val c = this.channels(channel)
                         for(name <- tmmList) {
 							var rating = 5000
-							if(c.users.contains(name) && (!name.equals(n))) {
+							if(c.users.contains(name) && isOnline(name) && (!name.equals(n))) {
 								if (ratinglimit != -1) {
 									rating = Leaderboards.getLRating(name)
 								}
@@ -711,7 +711,7 @@ object bot {
                         val c = this.channels(channel)
                         for(name <- mapgenList) {
 							var rating = 5000
-							if(c.users.contains(name) && (!name.equals(n))) {
+							if(c.users.contains(name) && isOnline(name) && (!name.equals(n))) {
 								if (ratinglimit != -1) {
 									rating = Leaderboards.getLRating(name)
 								}
@@ -1099,7 +1099,7 @@ object bot {
 						val noping = Array ("&AeonCommander","Giebmasse_irc","TheSetoner")
 						val chan = this.channels(c)
 							for (v <- chan.users) {
-								if(chan.users.contains(v) && !noping.contains(v))
+								if(chan.users.contains(v) && isOnline(v) && !noping.contains(v))
 									pingers = pingers + (" " + v)
 							}
 								sendAction(c,String.format("BAWtobots ASSEMBLE! %s",pingers))
@@ -1117,7 +1117,7 @@ object bot {
 						val noping = Array ("&AeonCommander","Giebmasse_irc","TheSetoner")
 						val chan = this.channels("#COM_clan")
 							for (v <- chan.users) {
-								if(chan.users.contains(v) && !noping.contains(v))
+								if(chan.users.contains(v) && isOnline(v) && !noping.contains(v))
 									pingers = pingers + (" " + v)
 							}
 								sendAction("#COM_clan",String.format("*SCREEEEEEEEEEEEEEECH* AUTISM RANGERS ASSEMBLE %s",pingers))
@@ -1135,7 +1135,7 @@ object bot {
 						val noping = Array ("&AeonCommander","Giebmasse_irc","TheSetoner","AeonCommander")
 						val chan = this.channels(c)
 							for (v <- chan.users) {
-								if(chan.users.contains(v) && !noping.contains(v))
+								if(chan.users.contains(v) && isOnline(v) && !noping.contains(v))
 									pingers = pingers + (" " + v)
 							}
 								sendAction(c,String.format("Oi lads, stop taking the piss, our Queen needs us! %s",pingers))
@@ -1153,7 +1153,7 @@ object bot {
 						val noping = Array ("&UEFCommander","Giebmasse_irc","Giebmasse_irc2","TheSetoner","UEFCommander")
 						val chan = this.channels(c)
 							for (v <- chan.users) {
-								if(chan.users.contains(v) && !noping.contains(v))
+								if(chan.users.contains(v) && isOnline(v) && !noping.contains(v))
 									pingers = pingers + (" " + v)
 							}
 								sendAction(c,String.format("%s has a special mission for you, only the best and highly trained special forces noobs qualify, saddle up and join the journey: %s",n,pingers))
