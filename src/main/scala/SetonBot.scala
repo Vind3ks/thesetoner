@@ -28,6 +28,7 @@ object bot {
             val pingList = new HashSet[String]()
 			val ladderList = new HashSet[String]()
 			val tmmList = new HashSet[String]()
+			val mapgenList = new HashSet[String]()
 			val galaList = new HashSet[String]()
 			val bhList = new HashSet[String]()
 			val quoteList = Source.fromFile(this.filePrefix+"-quotelist.txt").getLines.toArray
@@ -38,6 +39,7 @@ object bot {
 			// this.initASFList()  -- removed with the redacted ASF watchlist code
 			this.initLadderList()
 			this.initTMMList()
+			this.initMapgenList()
 			this.initGalaList()
 			this.initBhList()
 			//this.initquoteList()
@@ -104,6 +106,12 @@ object bot {
 						writer.write(name+"\r\n")
 					writer.close()
 			}
+			def updateMapgenList():Unit = {
+					val writer = new PrintWriter(new File(this.filePrefix+"-mapgenlist.txt"))
+					for(name <- mapgenList)
+						writer.write(name+"\r\n")
+					writer.close()
+			}
 			def updateTMMList():Unit = {
 					val writer = new PrintWriter(new File(this.filePrefix+"-tmmlist.txt"))
 					for(name <- tmmList)
@@ -167,6 +175,18 @@ object bot {
 					}
 				}
 				
+			def initMapgenList():Unit = {
+					try {
+						Source.fromFile(this.filePrefix+"-mapgenlist.txt").getLines().filter(_.nonEmpty).foreach(mapgenList.add(_))
+					}
+					catch {
+						case _ : java.io.FileNotFoundException => {
+							printLine(String.format("File not found: %s, initialising with an empty mapgen list", this.filePrefix+"-mapgenlist.txt"))
+						}
+						case _ : Throwable => { printLine("Something bad just happened, might want to do some debugging!") }
+					}
+				}
+
 			def initTMMList():Unit = {
 					try {
 						Source.fromFile(this.filePrefix+"-tmmlist.txt").getLines().foreach(tmmList.add(_))
@@ -396,6 +416,43 @@ object bot {
                 return false
             }
             functions.add("!untmm",unsignuptmm(_,_,_),0L,true)
+
+			// Mapgen pinglist: !mapgen / !unmapgen to sign up or leave, !to mapgen to ping.
+			// Admins can add or remove others: !mapgen nick1 nick2, !unmapgen nick1 nick2
+			def signupMapgen(n:String,channel:String,m:String):Boolean = {
+                val words = m.trim.split("\\s+")
+                if(words(0).equalsIgnoreCase("!mapgen")){
+                    if(words.length > 1 && admins.contains(n)){
+                        words.drop(1).foreach(mapgenList.add(_))
+                        updateMapgenList()
+                        sendAction(channel,String.format("added %s to the mapgen pinglist.",words.drop(1).mkString(", ")))
+                    } else {
+                        mapgenList.add(n)
+                        updateMapgenList()
+                        sendAction(channel,String.format("%s added to mapgen pinglist.",n))
+                    }
+                    return true
+                }
+                return false
+            }
+            functions.add("!mapgen",signupMapgen(_,_,_),0L,true)
+
+            def unsignupMapgen(n:String,channel:String,m:String):Boolean = {
+                val words = m.trim.split("\\s+")
+                if(words(0).equalsIgnoreCase("!unmapgen")){
+                    if(words.length > 1 && admins.contains(n)){
+                        words.drop(1).foreach(mapgenList.remove(_))
+                        updateMapgenList()
+                        sendAction(channel,String.format("removed %s from the mapgen pinglist.",words.drop(1).mkString(", ")))
+                    } else {
+                        if(mapgenList.remove(n)) updateMapgenList()
+                        sendAction(channel,String.format("%s removed from mapgen pinglist.",n))
+                    }
+                    return true
+                }
+                return false
+            }
+            functions.add("!unmapgen",unsignupMapgen(_,_,_),0L,true)
 
             def callToSetons(n:String,channel:String,m:String):Boolean = {
                 if(m.toLowerCase.startsWith("!to setons")){
@@ -630,6 +687,52 @@ object bot {
                 return false
             }
             functions.add("!to TMM",calltotmm(_,_,_),30L,true)
+
+			def callToMapgen(n:String,channel:String,m:String):Boolean = {
+                if(m.toLowerCase.startsWith("!to mapgen")){
+                    if(!this.channels.contains(channel))
+                        printLine("wtf?? (might have got this in pm)")
+                    else if(!mapgenList.contains(n))
+                        sendAction(channel,String.format("believes %s needs to sign up with !mapgen to use this command...",n))
+                    else {
+						val arr = m.split(" ", 3);
+						var ratinglimit = -1
+						if (arr.length > 2) {
+							try {
+								ratinglimit = arr(2).trim.toInt
+							 } catch {
+								case e: NumberFormatException => {
+									ratinglimit = -1
+									sendLine(channel,String.format("Proper command format: !to mapgen minimumrating"))
+									}
+								}
+						}
+                        var victims = ""
+                        val c = this.channels(channel)
+                        for(name <- mapgenList) {
+							var rating = 5000
+							if(c.users.contains(name) && (!name.equals(n))) {
+								if (ratinglimit != -1) {
+									rating = Leaderboards.getLRating(name)
+								}
+								if (rating>ratinglimit)
+									victims = victims + (" " + name)
+							}
+						}
+                        if(victims.length > 0) {
+                            sendLine(channel,String.format("%s summons fellow mapgen players!",n))
+                            sendLine(channel,victims)
+							this.channels(channel).users.clear()
+							writeLine(String.format("NAMES #aeolus"))
+						}
+                        else
+                            sendAction(channel,String.format("thinks %s needs to get some mapgen mates to ping first...",n))
+                    }
+                    return true
+                }
+                return false
+            }
+            functions.add("!to mapgen",callToMapgen(_,_,_),30L,true)
 
             def commandments(n:String,channel:String,m:String):Boolean = {
                 if(m.toLowerCase.split(" ")(0).equals("!commandments")){

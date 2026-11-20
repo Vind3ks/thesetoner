@@ -1,6 +1,6 @@
 # TheSetoner
 
-The Setons bot for `#aeolus` on [FAForever](https://www.faforever.com): Setons, ladder and TMM pinglists, game calls, preaching, quotes and other channel fun.
+The Setons bot for `#aeolus` on [FAForever](https://www.faforever.com): Setons, ladder, TMM and mapgen pinglists, game calls, preaching, quotes and other channel fun.
 
 It runs alongside FAF's [QAI](https://github.com/FAForever/faf-qai) bot and is built the same way: a Docker image configured with `IRC_*` environment variables, logging into FAF's IRC as a fixed user. QAI handles the factual lookups (`!player`, `!ratings`, `!streams`, `!seen`, `!help`), so Setoner doesn't duplicate them and keeps its help under `!setoner`.
 
@@ -10,7 +10,7 @@ It runs alongside FAF's [QAI](https://github.com/FAForever/faf-qai) bot and is b
 
 | Group | Commands |
 |---|---|
-| Pinglists and game calls | `!setons` / `!unsetons` / `!to setons`, `!signupladder` / `!unladder` / `!to ladder`, `!tmm` / `!untmm` / `!to tmm` |
+| Pinglists and game calls | `!setons` / `!unsetons` / `!to setons`, `!signupladder` / `!unladder` / `!to ladder`, `!tmm` / `!untmm` / `!to tmm`, `!mapgen` / `!unmapgen` / `!to mapgen` |
 | Lore | `!preach`, `!commandments`, `!sentonment`, `!lifestory`, `!threaten <nick>` |
 | Fun | `!choose a or b`, `!sharewisdom`, `!luxcuse`, `!balanceriot`, `!biceps`, `!gym`, `!undress`, `!refaf`, `!salt`, `!gametaunt <1-98>`, `!finddave`, `!grondcheck` |
 | Info | `!time [offset]`, `!report`, `!fix`, `!tutorials`, `!gms`, `!mapstats`, `!mods`, `!offlinemessage <nick> <text>`, page titles for pasted links |

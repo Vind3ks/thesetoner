@@ -23,7 +23,7 @@ tests=[(t1,P,"!setoner"),(t1,P,"!setoner help preach"),(t1,P,"!setoner help !cho
 (t1,P,"!lifestory"),(t1,P,"!sharewisdom"),(t1,P,"!luxcuse"),(t1,P,"!report"),(t1,P,"!choose red or blue"),(t1,P,"!grondcheck"),
 (t1,P,"!balanceriot"),(t1,P,"!biceps"),(t1,P,"!gym"),(t1,P,"!undress"),(t1,P,"!refaf"),(t1,P,"!time"),(t1,P,"!salt"),(t1,P,"!mapstats"),
 (t1,P,"!gms"),(t1,P,"!gameTaunt 5"),(t1,P,"!fix"),(t1,P,"!tutorials"),(t1,P,"look at https://example.com"),(t1,P,"!finddave"),(t1,P,"!mods"),
-(t1,P,"!signupladder"),(t2,P,"!signupladder"),(t1,P,"!unladder"),(t1,P,"!tmm"),(t1,P,"!untmm"),
+(t1,P,"!signupladder"),(t2,P,"!signupladder"),(t1,P,"!unladder"),(t1,P,"!tmm"),(t1,P,"!untmm"),(t1,P,"!mapgen"),(t2,P,"!mapgen"),(t1,P,"!to mapgen"),(t1,P,"!unmapgen"),(t1,P,"!to mapgen"),
 (t1,P,"!ratings Brutus5000"),(t1,P,"!globalrating x"),(t1,P,"!alias x"),(t1,P,"!sstreams"),(t1,P,"!ip example.com"),(t1,P,"!wordcount"),(t1,P,"!addtourney x"),
 (t1,P,"!UnSetons"),(t1,"TheSetoner","!choose pm or channel"),
 ]
