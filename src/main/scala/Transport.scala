@@ -4,7 +4,7 @@ import java.io._
 import java.net.{Socket, URI}
 import java.net.http.{HttpClient, WebSocket}
 import java.nio.charset.StandardCharsets
-import java.util.concurrent.{CompletionStage, LinkedBlockingQueue}
+import java.util.concurrent.{CompletionStage, LinkedBlockingQueue, TimeUnit}
 import javax.net.ssl.SSLSocketFactory
 
 /** A line-based connection to an IRC server. */
@@ -89,14 +89,44 @@ class WebSocketTransport(uri: URI) extends IrcTransport {
 
   @volatile private var closed = false
 
+  // A connection can die without a close frame (server restart, network drop). Without
+  // these checks the bot would then wait forever while looking "running" to Docker.
+  // So: ping the server every minute, and treat 3 minutes without any line as dead.
+  // readLine then returns null, the bot exits, and Docker starts it again.
+  private val ReadTimeoutSeconds = 180L
+  private val PingEverySeconds = 60L
+
+  private val keepalive = new Thread(() => {
+    try {
+      while (!closed) {
+        Thread.sleep(PingEverySeconds * 1000L)
+        if (!closed) writeLine("PING :keepalive")
+      }
+    } catch { case _: Throwable => () }
+  }, "irc-keepalive")
+  keepalive.setDaemon(true)
+  keepalive.start()
+
   def readLine(): String = {
     if (closed) return null
-    val line = queue.take()
-    if (line eq Closed) { closed = true; null } else line
+    val line = queue.poll(ReadTimeoutSeconds, TimeUnit.SECONDS)
+    if (line == null) {
+      println(s"No data from the server for $ReadTimeoutSeconds seconds, treating the connection as dead")
+      closed = true
+      null
+    }
+    else if (line eq Closed) { closed = true; null }
+    else line
   }
   def ready(): Boolean = !queue.isEmpty
   def writeLine(line: String): Unit = synchronized {
-    ws.sendText(line, true).join()
+    try ws.sendText(line, true).get(30, TimeUnit.SECONDS)
+    catch {
+      case e: Throwable =>
+        println(s"WebSocket send failed: $e")
+        queue.put(Closed)
+        throw new IOException("WebSocket send failed", e)
+    }
   }
   def close(): Unit = {
     try ws.sendClose(WebSocket.NORMAL_CLOSURE, "bye").join()

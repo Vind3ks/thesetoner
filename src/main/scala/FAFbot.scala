@@ -67,6 +67,10 @@ class FafBot(val config:BotConfig){
         else if(handleAway(line)){
             return true
         }
+        else if(line.split(" ").lift(1).contains("PONG")){
+            // answer to our keepalive ping
+            return true
+        }
         else {
             val commands = line.split(':')(1).split(" ")
 			//printLine("COMMANDS " + commands.mkString)
